@@ -6,6 +6,8 @@
 // @author       You
 // @match        https://coomer.party/*
 // @match        https://kemono.party/*
+// @match        https://coomer.su/*
+// @match        https://kemono.su/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
