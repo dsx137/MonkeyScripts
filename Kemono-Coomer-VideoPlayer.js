@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kemono/Coomer-VideoPlayer
 // @namespace    http://tampermonkey.net/
-// @version      0.1
+// @version      0.2
 // @description  take a video player under the link
 // @author       You
 // @match        https://coomer.party/*
