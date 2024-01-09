@@ -38,7 +38,7 @@ function kemonoVideoPlayer() {
 
         var div = document.createElement("div");
         div.appendChild(player);
-        // videojs();
+
         video_links[i].parentElement.appendChild(div);
         videojs(player);
     }
