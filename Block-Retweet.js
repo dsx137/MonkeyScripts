@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Block-Retweet
 // @namespace    http://tampermonkey.net/
-// @version      0.2
+// @version      0.3
 // @description  Block Retweet
 // @author       dsx137
 // @match        https://x.com/*
@@ -14,7 +14,7 @@ function deleteRetweet() {
     var articles = document.querySelectorAll("article");
     for (article of articles) {
         if (article.children[0].children[0].children[0].querySelectorAll("[dir]").length != 0) {
-            article.remove();
+            article.parentNode.parentNode.remove();
         }
     }
 }
