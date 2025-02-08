@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kemono/Coomer-VideoPlayer
 // @namespace    http://tampermonkey.net/
-// @version      0.3.2
+// @version      0.3.3
 // @description  A simple tampermonkey script allows you can watch the videos of post links in Kemono or Coomer.
 // @author       dsx137
 // @match        https://coomer.party/*
@@ -95,7 +95,7 @@ function attachPlayer() {
     var links = Array.from(document.querySelectorAll(".post__attachment-link, .scrape__attachment-link")).filter(it => !it.classList.contains('has-player'));
     if (links.length == 0) return false;
     for (let i in links) {
-        let linkSrc = links[i].getAttribute("href");
+        let linkSrc = links[i].href;
         if (!isSupportedVideoLink(linkSrc)) break;
         links[i].classList.add('has-player');
         let player = createPlayer(linkSrc)
