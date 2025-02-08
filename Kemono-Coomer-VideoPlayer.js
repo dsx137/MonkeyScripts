@@ -12,8 +12,8 @@
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
-// @resource     video.js_css https://vjs.zencdn.net/8.16.1/video-js.css
-// @require      https://vjs.zencdn.net/8.16.1/video.min.js
+// @resource     video.js_css https://cdnjs.cloudflare.com/ajax/libs/video.js/8.16.1/video-js.css
+// @require      https://cdnjs.cloudflare.com/ajax/libs/video.js/8.16.1/video.min.js
 // @license      MIT
 // ==/UserScript==
 
@@ -29,8 +29,23 @@ function createPlayer(linksrc) {
     src.src = linksrc;
     player.appendChild(src);
 
+    let volumePanelHoverCounter = 0;
+
     player.addEventListener('keydown', function (event) {
-        const step = player.duration / 50;
+        let step = player.duration / 50;
+        let volumePanel = player.parentElement.querySelector('.vjs-volume-panel');
+
+        let volumePanelAdjust = function () {
+            volumePanelHoverCounter++;
+            setTimeout(() => {
+                volumePanelHoverCounter--;
+                if (volumePanelHoverCounter <= 0) {
+                    if (!volumePanel.matches(':hover')) {
+                        volumePanel.classList.remove('vjs-hover');
+                    }
+                }
+            }, 1000);
+        }
 
         switch (event.code) {
             case 'ArrowLeft':
@@ -44,9 +59,13 @@ function createPlayer(linksrc) {
                 break;
             case 'ArrowUp':
                 player.volume = Math.min(1, player.volume + 0.1);
+                volumePanel.classList.add('vjs-hover');
+                volumePanelAdjust();
                 break;
             case 'ArrowDown':
                 player.volume = Math.max(0, player.volume - 0.1);
+                volumePanel.classList.add('vjs-hover');
+                volumePanelAdjust();
                 break;
             default:
                 return;
