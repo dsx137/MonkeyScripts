@@ -127,7 +127,6 @@ function attachPlayer() {
 (function () {
     'use strict';
     GM_addStyle(GM_getResourceText("video.js_css"));
-    GM_addStyle(GM_getResourceText("video.js_theme_city_css"));
 
     window.addEventListener('load', event => {
         attachPlayer()
