@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kemono/Coomer-VideoPlayer
 // @namespace    http://tampermonkey.net/
-// @version      0.3.1
+// @version      0.3.2
 // @description  A simple tampermonkey script allows you can watch the videos of post links in Kemono or Coomer.
 // @author       dsx137
 // @match        https://coomer.party/*
@@ -16,6 +16,19 @@
 // @require      https://cdnjs.cloudflare.com/ajax/libs/video.js/8.16.1/video.min.js
 // @license      AGPLv3
 // ==/UserScript==
+
+const suffixes = ['.mp4', '.m4v']
+
+function isSupportedVideoLink(link) {
+    try {
+        const parsedUrl = new URL(link);
+        const path = parsedUrl.pathname.toLowerCase();
+        return suffixes.some(suffix => path.endsWith(suffix));
+    } catch (error) {
+        return false;
+    }
+}
+
 
 function createPlayer(linksrc) {
     let player = document.createElement("video");
@@ -83,7 +96,7 @@ function attachPlayer() {
     if (links.length == 0) return false;
     for (let i in links) {
         let linkSrc = links[i].getAttribute("href");
-        if (linkSrc.search("\.mp4|\.m4v") == -1) break;
+        if (!isSupportedVideoLink(linkSrc)) break;
         links[i].classList.add('has-player');
         let player = createPlayer(linkSrc)
         links[i].parentElement.appendChild(player);
@@ -96,8 +109,9 @@ function attachPlayer() {
                 }
 
                 let newLinkSrc = mutation.target.getAttribute("href");
-                if (newLinkSrc.search("\.mp4|\.m4v") == -1) {
+                if (!isSupportedVideoLink(newLinkSrc)) {
                     videojs(player).dispose();
+                    links[i].classList.remove('has-player');
                     return;
                 }
 
@@ -105,7 +119,7 @@ function attachPlayer() {
                 videojs(player)
             });
         });
-        observer.observe(links[i], { attributes: true, })
+        observer.observe(links[i], { attributes: true, attributeFilter: ['href'] });
     }
     return true;
 }
