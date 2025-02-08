@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kemono/Coomer-VideoPlayer
 // @namespace    http://tampermonkey.net/
-// @version      0.3
+// @version      0.3.1
 // @description  A simple tampermonkey script allows you can watch the videos of post links in Kemono or Coomer.
 // @author       dsx137
 // @match        https://coomer.party/*
@@ -79,15 +79,33 @@ function createPlayer(linksrc) {
 }
 
 function attachPlayer() {
-    var videoLinks = Array.from(document.querySelectorAll(".post__attachment-link, .scrape__attachment-link")).filter(it => !it.classList.contains('has-player'));
-    if (videoLinks.length == 0) return false;
-    for (let i in videoLinks) {
-        let linkSrc = videoLinks[i].getAttribute("href");
+    var links = Array.from(document.querySelectorAll(".post__attachment-link, .scrape__attachment-link")).filter(it => !it.classList.contains('has-player'));
+    if (links.length == 0) return false;
+    for (let i in links) {
+        let linkSrc = links[i].getAttribute("href");
         if (linkSrc.search("\.mp4|\.m4v") == -1) break;
+        links[i].classList.add('has-player');
         let player = createPlayer(linkSrc)
-        videoLinks[i].parentElement.appendChild(player);
-        videoLinks[i].classList.add('has-player');
+        links[i].parentElement.appendChild(player);
         videojs(player)
+
+        let observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (!mutation.target) {
+                    return;
+                }
+
+                let newLinkSrc = mutation.target.getAttribute("href");
+                if (newLinkSrc.search("\.mp4|\.m4v") == -1) {
+                    videojs(player).dispose();
+                    return;
+                }
+
+                player.src = newLinkSrc;
+                videojs(player)
+            });
+        });
+        observer.observe(links[i], { attributes: true, })
     }
     return true;
 }
