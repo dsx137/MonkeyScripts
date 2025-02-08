@@ -7,7 +7,7 @@
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @icon         data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==
-// @license      GPL-3.0-or-later
+// @license      AGPLv3
 // ==/UserScript==
 
 function deleteRetweet() {
