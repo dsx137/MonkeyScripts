@@ -14,7 +14,7 @@
 // @grant        GM_getResourceText
 // @resource     video.js_css https://cdnjs.cloudflare.com/ajax/libs/video.js/8.16.1/video-js.css
 // @require      https://cdnjs.cloudflare.com/ajax/libs/video.js/8.16.1/video.min.js
-// @license      MIT
+// @license      AGPLv3
 // ==/UserScript==
 
 function createPlayer(linksrc) {
