@@ -32,7 +32,7 @@ function createPlayer(linksrc) {
     let volumePanelHoverCounter = 0;
 
     player.addEventListener('keydown', function (event) {
-        let step = player.duration / 50;
+        let step = 5;
         let volumePanel = player.parentElement.querySelector('.vjs-volume-panel');
 
         let volumePanelAdjust = function () {
