@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Kemono/Coomer-VideoPlayer
 // @namespace    http://tampermonkey.net/
-// @version      0.3.4
+// @version      0.3.5
 // @description  在Kemono或Coomer的post链接下添加video.js视频播放器。
 // @description:en-US  Add video.js player under Kemono or Coomer's post links.
 // @author       dsx137
@@ -22,14 +22,12 @@ const suffixes = ['.mp4', '.m4v']
 
 function isSupportedVideoLink(link) {
     try {
-        const parsedUrl = new URL(link);
-        const path = parsedUrl.pathname.toLowerCase();
+        const path = new URL(link).pathname.toLowerCase();
         return suffixes.some(suffix => path.endsWith(suffix));
     } catch (error) {
         return false;
     }
 }
-
 
 function createPlayer(linksrc) {
     let player = document.createElement("video");
@@ -45,11 +43,11 @@ function createPlayer(linksrc) {
 
     let volumePanelHoverCounter = 0;
 
-    player.addEventListener('keydown', function (event) {
+    player.addEventListener('keydown', event => {
         let step = 5;
         let volumePanel = player.parentElement.querySelector('.vjs-volume-panel');
 
-        let volumePanelAdjust = function () {
+        let volumePanelAdjust = () => {
             volumePanelHoverCounter++;
             setTimeout(() => {
                 volumePanelHoverCounter--;
@@ -93,7 +91,7 @@ function createPlayer(linksrc) {
 }
 
 function attachPlayer() {
-    var links = Array.from(document.querySelectorAll(".post__attachment-link, .scrape__attachment-link")).filter(it => !it.classList.contains('has-player'));
+    let links = Array.from(document.querySelectorAll(".post__attachment-link, .scrape__attachment-link")).filter(it => !it.classList.contains('has-player'));
     if (links.length == 0) return false;
     for (let i in links) {
         let linkSrc = links[i].href;
@@ -103,8 +101,8 @@ function attachPlayer() {
         links[i].parentElement.appendChild(player);
         videojs(player)
 
-        let observer = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
+        let observer = new MutationObserver(async mutations => {
+            mutations.forEach(async mutation => {
                 if (!mutation.target) {
                     return;
                 }
@@ -125,15 +123,13 @@ function attachPlayer() {
     return true;
 }
 
-(function () {
+(async function () {
     'use strict';
     GM_addStyle(GM_getResourceText("video.js_css"));
 
-    window.addEventListener('load', event => {
-        attachPlayer()
-        let observer = new MutationObserver(function (mutations) {
-            attachPlayer()
-        });
-        observer.observe(document.body, { childList: true, subtree: true })
+    attachPlayer();
+    let observer = new MutationObserver(async mutations => {
+        attachPlayer();
     });
+    observer.observe(document.body, { childList: true, subtree: true })
 })();
