@@ -29,7 +29,7 @@ function isSupportedVideoLink(link) {
     }
 }
 
-function createPlayer(linksrc) {
+function createPlayer(linkSrc) {
     let player = document.createElement("video");
 
     player.className = "video-js vjs-theme-city";
@@ -38,7 +38,7 @@ function createPlayer(linksrc) {
     player.setAttribute("data-setup", '{"controls":true, "autoplay":false, "preload":"auto", "height":"800px"}');
     let src = document.createElement("source");
     src.type = "video/mp4";
-    src.src = linksrc;
+    src.src = linkSrc;
     player.appendChild(src);
 
     let volumePanelHoverCounter = 0;
