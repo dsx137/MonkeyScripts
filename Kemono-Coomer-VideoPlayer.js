@@ -2,7 +2,7 @@
 // @name         Kemono/Coomer-VideoPlayer
 // @namespace    http://tampermonkey.net/
 // @version      0.3.3
-// @description:zh-CN  在Kemono或Coomer的post下添加video.js视频播放器。
+// @description  在Kemono或Coomer的post下添加video.js视频播放器。
 // @description:en-US  Add video.js player under Kemono or Coomer's post links.
 // @author       dsx137
 // @match        https://coomer.party/*
