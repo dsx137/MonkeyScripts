@@ -70,14 +70,31 @@ function createPlayer(linkSrc) {
                 player.paused ? player.play() : player.pause();
                 break;
             case 'ArrowUp':
+                if (player.muted) {
+                    player.volume = 0
+                    player.muted = false;
+                }
                 player.volume = Math.min(1, player.volume + 0.1);
                 volumePanel.classList.add('vjs-hover');
                 volumePanelAdjust();
                 break;
             case 'ArrowDown':
+                if (player.muted) {
+                    break;
+                }
                 player.volume = Math.max(0, player.volume - 0.1);
                 volumePanel.classList.add('vjs-hover');
                 volumePanelAdjust();
+                break;
+            case 'KeyM':
+                player.muted = !player.muted;
+                break;
+            case 'KeyF':
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    player.requestFullscreen();
+                }
                 break;
             default:
                 return;
