@@ -101,8 +101,8 @@ function attachPlayer() {
         links[i].parentElement.appendChild(player);
         videojs(player)
 
-        let observer = new MutationObserver(async mutations => {
-            mutations.forEach(async mutation => {
+        let observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
                 if (!mutation.target) {
                     return;
                 }
@@ -123,12 +123,13 @@ function attachPlayer() {
     return true;
 }
 
-(async function () {
+(function () {
     'use strict';
     GM_addStyle(GM_getResourceText("video.js_css"));
 
     attachPlayer();
-    let observer = new MutationObserver(async mutations => {
+
+    let observer = new MutationObserver(mutations => {
         attachPlayer();
     });
     observer.observe(document.body, { childList: true, subtree: true })
